@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Digital Wellness | الوعي الرقمي</title>
+    
+    <!-- مكتبات خارجية (خطوط، أيقونات، رسوم بيانية) -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;900&family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <!-- ربط ملف التصميم -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- خلفية متحركة -->
+    <div id="bg-animation"></div>
+    <div class="overlay"></div>
+
+    <!-- شريط التنقل -->
+    <nav>
+        <div class="logo">
+            <i class="fas fa-shield-virus"></i> CYBER<span class="highlight">GUARD</span>
+        </div>
+        
+        <div class="desktop-menu">
+            <a href="#home" data-i18n="nav_home">الرئيسية</a>
+            <a href="#facts" data-i18n="nav_facts">الحقائق</a>
+            <a href="#solutions" data-i18n="nav_sol">الحلول</a>
+            <a href="#game" data-i18n="nav_game">المحاكاة</a>
+            <a href="#quiz" data-i18n="nav_quiz">الاختبار</a>
+        </div>
+
+        <div class="controls">
+            <select id="lang-picker" onchange="changeLanguage(this.value)">
+                <option value="ar">العربية</option>
+                <option value="en">English</option>
+                <option value="fr">Français</option>
+            </select>
+            <button class="menu-toggle" onclick="toggleMobileMenu()"><i class="fas fa-bars"></i></button>
+        </div>
+    </nav>
+
+    <!-- القائمة الجانبية للموبايل -->
+    <div class="mobile-menu" id="mobile-nav">
+        <a href="#home" onclick="toggleMobileMenu()">Home</a>
+        <a href="#facts" onclick="toggleMobileMenu()">Facts</a>
+        <a href="#game" onclick="toggleMobileMenu()">Game</a>
+        <a href="#quiz" onclick="toggleMobileMenu()">Quiz</a>
+    </div>
+
+    <!-- 1. القسم الرئيسي -->
+    <section id="home">
+        <div class="hero-container">
+            <h1 data-i18n="hero_title">بوابتك نحو الأمان الرقمي</h1>
+            <p data-i18n="hero_desc">منصة تعليمية شاملة: حقائق طبية عن الضوء الأزرق + بروتوكولات الأمن السيبراني.</p>
+            
+            <div class="stats-row">
+                <div class="stat-item">
+                    <h2 class="counter" data-target="7">0</h2>
+                    <span data-i18n="stat_1">ساعات يومياً أمام الشاشة</span>
+                </div>
+                <div class="stat-item">
+                    <h2 class="counter" data-target="90">0</h2>
+                    <span data-i18n="stat_2">% من الاختراقات بسبب أخطاء بشرية</span>
+                </div>
+            </div>
+            
+            <a href="#game" class="cta-btn" data-i18n="btn_start">ابدأ التحدي</a>
+        </div>
+    </section>
+
+    <!-- 2. قسم الحقائق (Charts) -->
+    <section id="facts">
+        <div class="section-header">
+            <h2 data-i18n="title_facts">تحليل البيانات</h2>
+        </div>
+        <div class="grid-container">
+            <div class="card glass">
+                <h3 data-i18n="chart_1_title">تأثير الضوء الأزرق على النوم</h3>
+                <canvas id="sleepChart"></canvas>
+                <p class="source-note" data-i18n="source_1">المصدر: المؤسسة الوطنية للنوم (USA)</p>
+            </div>
+            <div class="card glass">
+                <h3 data-i18n="chart_2_title">أنواع التهديدات الرقمية</h3>
+                <canvas id="securityChart"></canvas>
+                <p class="source-note" data-i18n="source_2">المصدر: تقرير سيسكو للأمن السيبراني</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. المشاكل والحلول (Flip Cards) -->
+    <section id="solutions">
+        <div class="section-header">
+            <h2 data-i18n="title_sol">المشكلات والحلول</h2>
+        </div>
+        <div class="grid-container" id="solutions-grid">
+            <!-- سيتم ملؤه بالجافاسكريبت -->
+        </div>
+    </section>
+
+    <!-- 4. اللعبة -->
+    <section id="game">
+        <div class="section-header">
+            <h2 data-i18n="title_game">لعبة: حارس الشبكية</h2>
+        </div>
+        <div class="game-wrapper">
+            <div class="game-hud">
+                <span>SCORE: <b id="score">0</b></span>
+                <span>LEVEL: <b id="level">1</b></span>
+                <span>HP: <b id="hp">100%</b></span>
+            </div>
+            <canvas id="gameCanvas"></canvas>
+            
+            <div id="game-overlay" class="overlay-screen">
+                <h2 data-i18n="g_start_t">جاهز للمهمة؟</h2>
+                <p data-i18n="g_start_d">التقط العناصر الخضراء (مفيدة). تجنب العناصر الحمراء (فيروسات) والزرقاء (أشعة ضارة).</p>
+                <button onclick="startGame()" class="cta-btn">START</button>
+            </div>
+            
+            <div id="game-over" class="overlay-screen hidden">
+                <h2>GAME OVER</h2>
+                <p>Final Score: <span id="final-score">0</span></p>
+                <button onclick="startGame()" class="cta-btn">RETRY</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. الاختبار (5 مستويات) -->
+    <section id="quiz">
+        <div class="section-header">
+            <h2 data-i18n="title_quiz">تحدي الخبراء (5 مستويات)</h2>
+        </div>
+        
+        <div class="level-select" id="level-buttons">
+            <!-- أزرار المستويات -->
+        </div>
+
+        <div id="quiz-modal" class="glass hidden">
+            <div class="quiz-header">
+                <span id="q-progress">1/5</span>
+                <span id="q-level-name">Level 1</span>
+            </div>
+            <h3 id="q-text">السؤال...</h3>
+            <div class="options-grid" id="q-options"></div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 Digital Wellness Project. All information verified by medical & tech standards.</p>
+    </footer>
+
+    <!-- ربط ملف الجافاسكريبت -->
+    <script src="script.js"></script>
+</body>
+</html>
