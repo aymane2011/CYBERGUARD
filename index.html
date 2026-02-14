@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>CYBER SHIELD | الحماية الرقمية الشاملة</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body onload="initApp()">
+
+    <div id="main-bg"></div>
+    <div class="overlay"></div>
+
+    <!-- القائمة العلوية -->
+    <nav>
+        <div class="brand">CYBER <span style="color:var(--primary)">SHIELD</span></div>
+        
+        <ul class="nav-links">
+            <li><a onclick="scrollToSection('hero')" data-i18n="nav_home">الرئيسية</a></li>
+            <li><a onclick="scrollToSection('stats')" data-i18n="nav_stats">الإحصائيات</a></li>
+            <li><a onclick="scrollToSection('info-cards')" data-i18n="nav_info">المعلومات</a></li>
+            <li><a onclick="scrollToSection('solutions')" data-i18n="nav_sol">المشكلات (11)</a></li>
+            <li><a onclick="scrollToSection('game')" data-i18n="nav_game">اللعبة</a></li>
+            <li><a onclick="scrollToSection('quiz')" data-i18n="nav_quiz">الاختبار (7 مراحل)</a></li>
+        </ul>
+
+        <div class="tools">
+            <div class="bg-picker">
+                <button class="btn-tool"><i class="fas fa-image"></i></button>
+                <div class="bg-dropdown">
+                    <div onclick="changeBG('space')">Deep Space</div>
+                    <div onclick="changeBG('matrix')">The Matrix</div>
+                    <div onclick="changeBG('cyber')">Cyber City</div>
+                </div>
+            </div>
+            <!-- إصلاح لون القائمة -->
+            <select id="lang-select" onchange="changeLang(this.value)">
+                <option value="ar">العربية</option>
+                <option value="en">English</option>
+                <option value="fr">Français</option>
+            </select>
+            <div class="mobile-toggle" onclick="toggleMenu()"><i class="fas fa-bars"></i></div>
+        </div>
+    </nav>
+
+    <!-- 1. الرئيسية -->
+    <section id="hero">
+        <div class="hero-content">
+            <h1 class="hero-title" data-i18n="hero_title">الوعي الرقمي الشامل</h1>
+            <p data-i18n="hero_desc">منصة احترافية تجمع بين الحقائق الطبية للضوء الأزرق وبروتوكولات الأمن السيبراني.</p>
+            <button class="neon-btn" onclick="scrollToSection('game')" data-i18n="btn_start">ابدأ التحدي</button>
+        </div>
+    </section>
+
+    <!-- 2. الإحصائيات (3 مبيانات) -->
+    <section id="stats">
+        <h2 class="section-title" data-i18n="title_stats">تحليل البيانات البيانية</h2>
+        <div class="charts-grid">
+            <div class="glass-panel">
+                <h3 data-i18n="chart_1">تأثير الضوء الأزرق</h3>
+                <canvas id="chartLine"></canvas>
+            </div>
+            <div class="glass-panel">
+                <h3 data-i18n="chart_2">أنواع الهجمات</h3>
+                <canvas id="chartDoughnut"></canvas>
+            </div>
+            <div class="glass-panel">
+                <h3 data-i18n="chart_3">إجهاد العين عالمياً</h3>
+                <canvas id="chartBar"></canvas>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. معلومات مفصلة (6 بطاقات) -->
+    <section id="info-cards">
+        <h2 class="section-title" data-i18n="title_info">حقائق علمية وتقنية</h2>
+        <div class="info-grid" id="info-container">
+            <!-- سيتم التوليد بالجافاسكريبت -->
+        </div>
+    </section>
+
+    <!-- 4. المشكلات والحلول (11 بطاقة) -->
+    <section id="solutions">
+        <h2 class="section-title" data-i18n="title_sol">11 مشكلة وحل</h2>
+        <p style="text-align:center; color:#aaa; margin-bottom:20px;" data-i18n="hint_flip">اضغط على البطاقة للكشف عن الحل (بطاقة واحدة فقط)</p>
+        <div class="prob-grid" id="prob-container">
+            <!-- سيتم التوليد بالجافاسكريبت -->
+        </div>
+    </section>
+
+    <!-- 5. اللعبة -->
+    <section id="game">
+        <h2 class="section-title" data-i18n="title_game">لعبة: حارس الشبكية</h2>
+        <div class="game-box">
+            <div class="game-ui">
+                <div>SCORE: <span id="g-score">0</span></div>
+                <div>LEVEL: <span id="g-lvl">1</span></div>
+                <div>HP: <span id="g-hp">100%</span></div>
+            </div>
+            <canvas id="gameCanvas"></canvas>
+            <div id="game-overlay" class="g-overlay">
+                <h2 data-i18n="g_ready">جاهز للمهمة؟</h2>
+                <p data-i18n="g_desc">اجمع الأخضر. تجنب الأحمر والأزرق.</p>
+                <button class="neon-btn" onclick="startGame()">START</button>
+            </div>
+            <div id="game-over" class="g-overlay hidden">
+                <h2>GAME OVER</h2>
+                <p>Final Score: <span id="final-score">0</span></p>
+                <button class="neon-btn" onclick="startGame()">RETRY</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- 6. الاختبار (7 مراحل) -->
+    <section id="quiz">
+        <h2 class="section-title" data-i18n="title_quiz">تحدي الخبراء (7 مستويات)</h2>
+        <div class="level-map" id="lvl-map"></div>
+        
+        <div id="quiz-window" class="glass-panel hidden">
+            <div class="q-header">
+                <span id="q-progress">1/5</span>
+                <span id="q-level">Level 1</span>
+            </div>
+            <h3 id="q-text">السؤال...</h3>
+            <div class="opt-grid" id="q-opts"></div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 CYBER SHIELD. موثق طبياً وتقنياً.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
